@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Camera Demo</title>
+    <style>
+        #container{
+            text-align: center;
+        }
+        #video{
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="container">
+        <h1>カメラ起動デモサイト</h1>
+       <video muted autoplay playsinline id="video"></video> <!-- playsinline属性を追加 -->
+
+    </div>
+    <script>
+        var video = document.getElementById("video");
+        // getUserMedia によるカメラ映像の取得
+        var media = navigator.mediaDevices.getUserMedia({
+            video: true,//ビデオを取得する
+            //使うカメラをインカメラか背面カメラかを指定する場合には
+            //video: { facingMode: "environment" },//背面カメラ
+            //video: { facingMode: "user" },//インカメラ
+            audio: false,//音声が必要な場合はture
+        });
+        //リアルタイムに再生（ストリーミング）させるためにビデオタグに流し込む
+        media.then((stream) => {
+            video.srcObject = stream;
+        });
+    </script>
+    
+</body>
+</html>

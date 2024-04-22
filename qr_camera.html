@@ -1,49 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Camera Demo</title>
+    <title>Face Detection Demo</title>
     <style>
-        #container{
-            text-align: center;
+        #video {
+            position: absolute;
+            top: 0;
+            left: 0;
         }
-        #video{
-            width: 100%;
-            height: auto;
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
         }
     </style>
 </head>
 <body>
-    <div id="container">
-        <h1>カメラ起動デモサイト</h1>
-       <video muted autoplay playsinline id="video"></video> <!-- playsinline属性を追加 -->
-
-    </div>
-<!-- 
+    <video id="video" autoplay muted playsinline width="720" height="560"></video>
+    <canvas id="canvas"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js"></script>
     <script>
-        navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false})
-            .then(function(stream) {
-                var video = document.getElementById('video');
-                video.srcObject = stream;
-                video.play();
-            })
-            .catch(function(err) {
-                console.log("An error occurred: " + err);
-            });
-    </script> -->
-    <script>
-        var video = document.getElementById("video");
-        // getUserMedia によるカメラ映像の取得
-        var media = navigator.mediaDevices.getUserMedia({
-            video: true,//ビデオを取得する
-            //使うカメラをインカメラか背面カメラかを指定する場合には
-            //video: { facingMode: "environment" },//背面カメラ
-            //video: { facingMode: "user" },//インカメラ
-            audio: false,//音声が必要な場合はture
-        });
-        //リアルタイムに再生（ストリーミング）させるためにビデオタグに流し込む
-        media.then((stream) => {
+        async function startVideo() {
+            const video = document.getElementById('video');
+            const stream = await navigator.mediaDevices.getUserMedia({video: true});
             video.srcObject = stream;
-        });
+
+            await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
+            setInterval(async () => {
+                const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+                const canvas = document.getElementById('canvas');
+                canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height)
+                faceapi.draw.drawDetections(canvas, detections);
+            }, 100)
+        }
+
+        startVideo();
     </script>
 </body>
 </html>
