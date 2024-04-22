@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Camera Demo</title>
+    <style>
+        #container{
+            text-align: center;
+        }
+        #video{
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Camera Demo</h1>
+        <video id="video" autoplay></video>
+    </div>
+
+    <script>
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false})
+            .then(function(stream) {
+                var video = document.getElementById('video');
+                video.srcObject = stream;
+                video.play();
+            })
+            .catch(function(err) {
+                console.log("An error occurred: " + err);
+            });
+    </script>
+</body>
+</html>

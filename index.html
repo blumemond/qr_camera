@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>QR Code Demo</title>
+    <style>
+        #container{
+            text-align: center;
+        }
+        #qr_code{
+            width: 200px;
+            height: 200px;
+            margin-top: 2em;
+        }
+        #video{
+            display: none;
+            width: 100%;
+            height: auto;
+            margin-top: 2em;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>QR Code Demo</h1>
+        <img id="qr_code" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://yourwebsite.com/page" alt="QR code">
+        <video id="video" autoplay></video>
+    </div>
+
+    <script>
+        if (window.location.href !== "qr_camera.html") return;
+        
+        navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+            .then(function(stream) {
+                var video = document.getElementById('video');
+                video.style.display = 'block';
+                video.srcObject = stream;
+                video.play();
+            })
+            .catch(function(err) {
+                console.log("An error occurred: " + err);
+            });
+    </script>
+</body>
+</html>
