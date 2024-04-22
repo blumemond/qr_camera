@@ -18,15 +18,16 @@
 <body>
     <video id="video" autoplay muted playsinline width="720" height="560"></video>
     <canvas id="canvas"></canvas>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-    <script src="https://cdn.jsdelivr.net/npm/face-api.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+
     <script>
         async function startVideo() {
             const video = document.getElementById('video');
             const stream = await navigator.mediaDevices.getUserMedia({video: true});
             video.srcObject = stream;
 
-            await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
+            await faceapi.nets.tinyFaceDetector.loadFromUri('./models');
             setInterval(async () => {
                 const detections = await faceapi.detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
                 const canvas = document.getElementById('canvas');
