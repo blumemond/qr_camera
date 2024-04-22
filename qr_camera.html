@@ -15,11 +15,10 @@
 <body>
     <div id="container">
         <h1>カメラ起動デモサイト</h1>
-       < video muted autoplay playsinline id="video"></video> <!-- playsinline属性を追加 -->
-       <input type="file" capture="user" accept="video/*">
+       <video muted autoplay playsinline id="video"></video> <!-- playsinline属性を追加 -->
 
     </div>
-
+<!-- 
     <script>
         navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false})
             .then(function(stream) {
@@ -30,6 +29,16 @@
             .catch(function(err) {
                 console.log("An error occurred: " + err);
             });
-    </script>
+    </script> -->
+    <script>
+        navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" }, audio: false})
+            .then(function(stream) {
+                var video = document.getElementById('video');
+                video.srcObject = stream;
+                video.play();
+            })
+            .catch(function(err) {
+                console.log("An error occurred: " + err);
+            });
 </body>
 </html>
